@@ -4,6 +4,7 @@
     <string name="setupUrlLabel">Adresse de votre tt-rss:</string>
     <string name="setupUserLabel">Login tt-rss:</string>
     <string name="setupPasswordLabel">Mot de passe tt-rss:</string>
+    <string name="setupTimeoutLabel">Temps d\'attente:</string>
     <string name="setupRetrieveOnlyUnread">Récuperer uniquement les articles non lus</string>
     <string name="httpAuthUserLabel">Login :</string>
     <string name="httpAuthPasswordLabel">Mot de passe:</string>>
@@ -23,6 +24,7 @@
     <string name="preference_ttrss_url_summary">L\'adresse de votre serveur tt-rss (par exemple: http://ttrss.exemple.org sans /api/ à la fin)</string>
     <string name="preference_ttrss_password_summary">Mot de passe pour se connecter à votre tt-rss</string>
     <string name="preference_ttrss_user_summary">Nom d\'utilisateur pour se connecter à tt-rss</string>
+    <string name="preference_ttrss_timeout_summary">secondes à attendre pour les réponses du serveur</string>
     <string name="preference_activity_title">Tiny Tiny Feed - Configuration</string>
     <string name="preference_article_number_summary">Nombre d\'articles que vous souhaitez récupérer</string>
     <string name="preference_httpauth_password_summary">Mot de passe de votre authentification HTTP</string>

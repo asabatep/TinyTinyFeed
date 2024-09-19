@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
@@ -97,6 +98,8 @@ public class Fetcher {
     private final String httpAuthPassword;
     private final String filenameTemplate;
 
+    private final int timeout;
+
     private final boolean allowAllSslKey;
     private final boolean allowAllSslHost;
 
@@ -107,6 +110,7 @@ public class Fetcher {
         this.url = preferences.getString(URL_KEY, "") + "/api/";
         this.user = preferences.getString(USER_KEY, "");
         this.password = preferences.getString(PASSWORD_KEY, "");
+        this.timeout = Integer.parseInt(preferences.getString(SERVER_TIMEOUT, "10"));
         this.allowAllSslKey = preferences.getBoolean(ALL_SLL_KEY, false);
         this.allowAllSslHost = preferences.getBoolean(ALL_HOST_KEY, false);
         this.httpAuthUser = preferences.getString(HTTP_USER_KEY, "");
@@ -226,6 +230,10 @@ public class Fetcher {
                         .build();
             });
         }
+
+        builder.connectTimeout(this.timeout, TimeUnit.SECONDS);
+        builder.readTimeout(this.timeout, TimeUnit.SECONDS);
+        builder.writeTimeout(this.timeout, TimeUnit.SECONDS);
 
         Log.d(TAG, "Http client created");
         return builder.build();

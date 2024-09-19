@@ -16,6 +16,12 @@
             android:key="org.poopeeland.tinytinyfeed.PREFERENCE_PASSWORD"
             android:summary="@string/preference_ttrss_password_summary"
             android:title="@string/setupPasswordLabel" />
+        <org.poopeeland.tinytinyfeed.interfaces.TrimmedEditTextPreference
+            android:inputType="phone"
+            android:key="org.poopeeland.tinytinyfeed.PREFERENCE_TIMEOUT"
+            android:summary="@string/preference_ttrss_timeout_summary"
+            android:hint="10"
+            android:title="@string/setupTimeoutLabel" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_category_ssl_settings">
         <CheckBoxPreference
