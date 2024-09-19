@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
-	jcenter()
+        jcenter()
         google()
     }
     dependencies {
@@ -16,13 +16,14 @@ repositories {
     mavenCentral()
     jcenter()
     google()
+    maven { url 'https://jitpack.io' }
 }
 
 android {
     compileSdkVersion 29
 
     dependencies {
-        api 'com.rarepebble:colorpicker:2.2.0'
+        implementation 'com.github.martin-stone:hsv-alpha-color-picker-android:2.2.0'
         api('commons-validator:commons-validator:1.6') {
             exclude group: 'commons-logging', module: 'commons-logging'
         }
@@ -45,3 +46,8 @@ android {
 
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'androidx.core:core-ktx:1.6.0'
+    }
+}
