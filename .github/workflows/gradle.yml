@@ -30,11 +30,11 @@ jobs:
         build-tools: '29.0.3'
         
     - name: build apk
-      run: ./gradlew build
+      run: |
+        ./gradlew build
+        mv TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-release-unsigned.apk TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-${GITHUB_SHA::7}.apk
 
     - name: upload apk
-      run: |
-        mv TinyTinyFeed/build/outputs/apk/release/app-release-unsigned.apk TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-${GITHUB_SHA::7}.apk
       uses: actions/upload-artifact@v3
       with:
         name: TinyTinyFeed-${GITHUB_SHA::7}.apk
