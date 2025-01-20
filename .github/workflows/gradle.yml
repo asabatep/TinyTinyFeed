@@ -1,0 +1,41 @@
+name: build apk
+
+on:
+  push:
+    branches:
+      - devel
+  pull_request:
+    branches:
+      - devel
+
+jobs:
+  build:
+    name: build apk
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 29
+        build-tools: '29.0.3'
+        
+    - name: build apk
+      run: ./gradlew build
+
+    - name: upload apk
+      run: |
+        mv TinyTinyFeed/build/outputs/apk/release/app-release-unsigned.apk TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-${GITHUB_SHA::7}.apk
+      uses: actions/upload-artifact@v3
+      with:
+        name: TinyTinyFeed-${GITHUB_SHA::7}.apk
+        path: TinyTinyFeed/build/outputs/apk/release/app-${GITHUB_SHA::7}.apk
