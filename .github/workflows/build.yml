@@ -1,0 +1,40 @@
+name: Build TinyTinyFeed on RHEL
+
+on:
+  push:
+    branches:
+      - devel
+  pull_request:
+    branches:
+      - devel
+
+jobs:
+  build:
+    name: Build TinyTinyFeed
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Build TinyTinyfeed
+      uses: addnab/docker-run-action@v3
+      with:
+        image: rockylinux/rockylinux:9
+        options: |
+          -v ${{ github.workspace }}:/build
+          -e ANDROID_SDK_ROOT=/opt/android-sdk 
+          -e JAVA_HOME=/usr/lib/jvm/java 
+          -e PATH=/root/.local/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        run: |
+          dnf -y install epel-release
+          dnf -y install --setopt=install_weak_deps=False java-1.8.0-openjdk-devel pipx
+          pipx install sdkmanager
+          sdkmanager "build-tools;29.0.3" "platforms;android-29"
+          yes y | sdkmanager --licenses
+          cd /build && bash gradlew build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        path: TinyTinyFeed/build/outputs/apk/release/*apk
