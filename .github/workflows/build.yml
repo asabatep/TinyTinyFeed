@@ -37,4 +37,8 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        path: TinyTinyFeed/build/outputs/apk/release/*apk
+        path: |
+          TinyTinyFeed/build/outputs/apk/release/*apk
+          TinyTinyFeed/build/outputs/apk/debug/*apk
+          TinyTinyFeed/build/outputs/apk/release/*json
+          TinyTinyFeed/build/outputs/apk/debug/*json
