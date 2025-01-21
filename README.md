@@ -1,13 +1,11 @@
 TinyTinyFeed
 ============
 
-# **Your attention please**
-# **This project won't be updated anymore**
-# **Thank you.**
+## Project status
 
+This project was abandoned by the original author. This repo exists just to keep it buildable on my phone.
 
 ## Introduction
-
 
 A Simple Widget to publish your [Tiny Tiny RSS Feeds](http://tt-rss.org) on your home screen
 
@@ -17,9 +15,9 @@ The widget updates itself every 30 minutes and shows you the last 20 articles (y
 
 Be aware that the widget update isn't in sync with the TTRss update.
 
-Artworks from my wife [Namida](https://www.facebook.com/NamidaArt) (or [here](http://namida-art.com)) - Kuddos to her
+Artworks from [Namida](https://www.facebook.com/NamidaArt) (or [here](http://namida-art.com)) - Kuddos to her
 
-If you want, buy me some [coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TPHRD64MV2B5U)
+Buy the original author some [coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TPHRD64MV2B5U).
 
 ## Release notes
 
