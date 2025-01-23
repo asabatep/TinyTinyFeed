@@ -1,11 +1,10 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.0'
+        classpath 'com.android.tools.build:gradle:7.4.2'
     }
 
 
@@ -14,40 +13,42 @@ apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
-    jcenter()
     google()
     maven { url 'https://jitpack.io' }
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     dependencies {
-        implementation 'com.github.martin-stone:hsv-alpha-color-picker-android:2.2.0'
-        api('commons-validator:commons-validator:1.6') {
+        implementation 'com.github.martin-stone:hsv-alpha-color-picker-android:2.4.2'
+        api('commons-validator:commons-validator:1.9.0') {
             exclude group: 'commons-logging', module: 'commons-logging'
         }
-        api 'com.google.code.gson:gson:2.8.5'
-        api 'com.squareup.okhttp3:okhttp:3.10.0'
+        api 'com.google.code.gson:gson:2.11.0'
+        api 'com.squareup.okhttp3:okhttp:4.12.0'
     }
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode 24
         versionName "1.12.2"
         applicationId "org.poopeeland.tinytinyfeed"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
+    lintOptions {
+        disable 'ExpiredTargetSdkVersion'
+    }
 }
 
 configurations.all {
     resolutionStrategy {
-        force 'androidx.core:core-ktx:1.6.0'
+        force 'androidx.core:core-ktx:1.15.0'
     }
 }

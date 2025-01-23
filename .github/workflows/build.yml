@@ -28,9 +28,9 @@ jobs:
           -e PATH=/root/.local/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
         run: |
           dnf -y install epel-release
-          dnf -y install --setopt=install_weak_deps=False java-1.8.0-openjdk-devel pipx
+          dnf -y install --setopt=install_weak_deps=False java-11-openjdk-devel pipx
           pipx install sdkmanager
-          sdkmanager "build-tools;29.0.3" "platforms;android-29"
+          sdkmanager "build-tools;30.0.3" "platforms;android-30"
           yes y | sdkmanager --licenses
           cd /build && bash gradlew build
 
