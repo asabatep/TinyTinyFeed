@@ -75,7 +75,7 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
             this.articleList = this.loadLastList();
         }
 
-        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         String dateStr = dateFormat.format(new Date());
         CharSequence text = context.getText(R.string.lastUpdateText);
         rvs.setTextViewText(R.id.lastUpdateText, String.format(text.toString(), dateStr));

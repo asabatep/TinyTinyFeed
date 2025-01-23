@@ -14,7 +14,7 @@
     <string name="emptyWidgetListTest">Feed list is empty</string>
     <string name="setupCheckButtonText">Check</string>
     <string name="defaultLastUpdateText">Never updated</string>
-    <string name="lastUpdateText">Last update: %s</string>
+    <string name="lastUpdateText">Updated: %s</string>
     <string name="unreadSymbol" translatable="false">[*]</string>
     <string name="connectionError">Connection issue - Check if the server is online and if the url is the good one</string>
     <string name="connectionAuthError">HTTP auth - Please check your credentials</string>
