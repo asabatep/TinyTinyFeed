@@ -32,7 +32,7 @@ jobs:
           -e ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           dnf -y install epel-release
-          dnf -y install --setopt=install_weak_deps=False java-11-openjdk-devel pipx
+          dnf -y install --setopt=install_weak_deps=False java-17-openjdk-devel pipx
           pipx install sdkmanager
           sdkmanager "build-tools;30.0.3" "platforms;android-30"
           yes y | sdkmanager --licenses
