@@ -296,6 +296,7 @@ public class Fetcher {
         checkIfNetworkAvailable();
 
         List<Feed> regularFeeds = getSpecialFeeds("-3");
+        List<Feed> labelFeeds   = getSpecialFeeds("-2");
         List<Feed> virtualFeeds = getSpecialFeeds("-1");
 
         Log.d(TAG, "Feeds fetched");
@@ -303,6 +304,7 @@ public class Fetcher {
         Collections.sort(regularFeeds);
         List<Feed> feeds = new LinkedList<>();
         feeds.addAll(virtualFeeds);
+        feeds.addAll(labelFeeds);
         feeds.addAll(regularFeeds);
         return feeds;
     }
