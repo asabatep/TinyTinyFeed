@@ -32,3 +32,6 @@ proguard/
 build/
 captures/
 projectFilesBackup/
+
+# Local variables
+.env

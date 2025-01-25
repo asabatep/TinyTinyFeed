@@ -26,6 +26,10 @@ jobs:
           -e ANDROID_SDK_ROOT=/opt/android-sdk 
           -e JAVA_HOME=/usr/lib/jvm/java 
           -e PATH=/root/.local/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+          -e ANDROID_KEYSTORE_BASE64=${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          -e ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          -e ANDROID_KEY_ALIAS=${{ secrets.ANDROID_KEY_ALIAS }}
+          -e ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           dnf -y install epel-release
           dnf -y install --setopt=install_weak_deps=False java-11-openjdk-devel pipx
@@ -33,6 +37,14 @@ jobs:
           sdkmanager "build-tools;30.0.3" "platforms;android-30"
           yes y | sdkmanager --licenses
           cd /build && bash gradlew build
+          echo $ANDROID_KEYSTORE_BASE64 | base64 -d > /dev/shm/ks.jks
+          /opt/android-sdk/build-tools/30.0.3/apksigner sign \
+            --ks /dev/shm/ks.jks \
+            --ks-pass env:ANDROID_KEYSTORE_PASSWORD \
+            --key-pass env:ANDROID_KEY_PASSWORD \
+            --ks-key-alias $ANDROID_KEY_ALIAS \
+            --out /build/TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-release.apk \
+            /build/TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-release-unsigned.apk
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
