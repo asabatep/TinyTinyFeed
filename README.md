@@ -3,7 +3,7 @@ TinyTinyFeed
 
 ## Project status
 
-This project was abandoned by the original author. This repo exists just to keep it buildable on my phone.
+This project was abandoned by the original author. As I still use the application, this repo exists just to keep the APK buildable and for minimal maintenance.
 
 ## Introduction
 
@@ -20,6 +20,11 @@ Artworks from [Namida](https://www.facebook.com/NamidaArt) (or [here](http://nam
 Buy the original author some [coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TPHRD64MV2B5U).
 
 ## Release notes
+
+* V1.13
+    * Significant dependencies bump, some needed to make it buildable and some for future-proofing
+    * Add label support alongside feeds
+    * Minor cosmetic adjustments
 
 * V1.10
     * Status text now shows when the widget is updating
