@@ -18,7 +18,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 28
 
     dependencies {
         implementation 'com.github.martin-stone:hsv-alpha-color-picker-android:2.4.2'
@@ -31,15 +31,15 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 28
         versionCode 25
-        versionName "1.13.0"
+        versionName "1.13.1"
         applicationId "org.poopeeland.tinytinyfeed"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     namespace 'org.poopeeland.tinytinyfeed'
