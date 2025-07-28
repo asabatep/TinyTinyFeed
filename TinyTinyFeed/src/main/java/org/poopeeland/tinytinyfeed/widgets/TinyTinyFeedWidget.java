@@ -98,7 +98,7 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
                 rv.setInt(R.id.widgetEmptyList, "setTextColor", textColor);
                 rv.setInt(R.id.widgetLayoutId, "setBackgroundColor", bgColor);
                 Intent startActivityIntent = new Intent(context, ArticleReadActivity.class);
-                PendingIntent startActivityPendingIntent = PendingIntent.getActivity(context, 0, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent startActivityPendingIntent = PendingIntent.getActivity(context, 0, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
                 rv.setPendingIntentTemplate(R.id.listViewWidget, startActivityPendingIntent);
 
                 appWidgetManager.updateAppWidget(i, rv);
@@ -109,7 +109,7 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
             Intent intent = new Intent(context, SettingsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, SettingsActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, SettingsActivity.class), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             rv.setOnClickPendingIntent(R.id.no_settings_layout, pendingIntent);
             rv.setInt(R.id.no_settings_layout, "setTextColor", 0xffffff);
             appWidgetManager.updateAppWidget(appWidgetIds, rv);
