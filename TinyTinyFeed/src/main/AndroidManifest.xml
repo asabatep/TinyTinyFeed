@@ -10,10 +10,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
             android:name="org.poopeeland.tinytinyfeed.activities.SettingsActivity"
+            android:exported="true"
             android:label="@string/preference_activity_title">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -30,6 +32,7 @@
 
         <activity
             android:name="org.poopeeland.tinytinyfeed.activities.WidgetSettingsActivity"
+            android:exported="true"
             android:label="@string/preference_activity_title">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -43,14 +46,17 @@
         <activity
             android:name=".activities.ArticleReadActivity"
             android:excludeFromRecents="true"
+            android:exported="false"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay" />
 
         <service
             android:name="org.poopeeland.tinytinyfeed.services.WidgetService"
+            android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name="org.poopeeland.tinytinyfeed.widgets.TinyTinyFeedWidget">
+        <receiver android:name="org.poopeeland.tinytinyfeed.widgets.TinyTinyFeedWidget"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

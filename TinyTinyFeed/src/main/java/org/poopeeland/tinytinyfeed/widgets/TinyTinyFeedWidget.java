@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -58,6 +59,12 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
 
     private static final String TAG = "TinyTinyFeedWidget";
 
+    // PendingIntent flags for API compatibility
+    private static final int FLAG_IMMUTABLE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            ? PendingIntent.FLAG_IMMUTABLE : 0;
+    private static final int FLAG_MUTABLE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+            ? PendingIntent.FLAG_MUTABLE : 0;
+
     /**
      * Return a Pending Intent asking the refresh of the widget
      *
@@ -70,7 +77,7 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, TinyTinyFeedWidget.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
     }
 
     @Override
@@ -98,7 +105,8 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
                 rv.setInt(R.id.widgetEmptyList, "setTextColor", textColor);
                 rv.setInt(R.id.widgetLayoutId, "setBackgroundColor", bgColor);
                 Intent startActivityIntent = new Intent(context, ArticleReadActivity.class);
-                PendingIntent startActivityPendingIntent = PendingIntent.getActivity(context, 0, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                // FLAG_MUTABLE is required: the system merges fill-in intents into this template at click time
+                PendingIntent startActivityPendingIntent = PendingIntent.getActivity(context, 0, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT | FLAG_MUTABLE);
                 rv.setPendingIntentTemplate(R.id.listViewWidget, startActivityPendingIntent);
 
                 appWidgetManager.updateAppWidget(i, rv);
@@ -109,7 +117,7 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
             Intent intent = new Intent(context, SettingsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, SettingsActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, SettingsActivity.class), PendingIntent.FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
             rv.setOnClickPendingIntent(R.id.no_settings_layout, pendingIntent);
             rv.setInt(R.id.no_settings_layout, "setTextColor", 0xffffff);
             appWidgetManager.updateAppWidget(appWidgetIds, rv);

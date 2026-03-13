@@ -1,4 +1,4 @@
-name: Build TinyTinyFeed on RHEL
+name: Build TinyTinyFeed
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Build TinyTinyfeed
       uses: addnab/docker-run-action@v3
@@ -23,8 +23,8 @@ jobs:
         image: rockylinux/rockylinux:9
         options: |
           -v ${{ github.workspace }}:/build
-          -e ANDROID_SDK_ROOT=/opt/android-sdk 
-          -e JAVA_HOME=/usr/lib/jvm/java 
+          -e ANDROID_SDK_ROOT=/opt/android-sdk
+          -e JAVA_HOME=/usr/lib/jvm/java
           -e PATH=/root/.local/bin:/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
           -e ANDROID_KEYSTORE_BASE64=${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           -e ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -34,17 +34,18 @@ jobs:
           dnf -y install epel-release
           dnf -y install --setopt=install_weak_deps=False java-17-openjdk-devel pipx
           pipx install sdkmanager
-          sdkmanager "build-tools;30.0.3" "platforms;android-30"
           yes y | sdkmanager --licenses
+          sdkmanager "build-tools;34.0.0" "platforms;android-34"
           cd /build && bash gradlew build
           echo $ANDROID_KEYSTORE_BASE64 | base64 -d > /dev/shm/ks.jks
-          /opt/android-sdk/build-tools/30.0.3/apksigner sign \
+          /opt/android-sdk/build-tools/34.0.0/apksigner sign \
             --ks /dev/shm/ks.jks \
             --ks-pass env:ANDROID_KEYSTORE_PASSWORD \
             --key-pass env:ANDROID_KEY_PASSWORD \
             --ks-key-alias $ANDROID_KEY_ALIAS \
             --out /build/TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-release.apk \
             /build/TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-release-unsigned.apk
+          rm -f /dev/shm/ks.jks
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
