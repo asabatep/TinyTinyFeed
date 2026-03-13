@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - devel
+    tags:
+      - 'v*'
   pull_request:
     branches:
       - devel
@@ -55,3 +57,13 @@ jobs:
           TinyTinyFeed/build/outputs/apk/debug/*apk
           TinyTinyFeed/build/outputs/apk/release/*json
           TinyTinyFeed/build/outputs/apk/debug/*json
+
+    - name: Attach APK to release
+      if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh release upload ${{ github.ref_name }} \
+          TinyTinyFeed/build/outputs/apk/release/TinyTinyFeed-release.apk \
+          --repo ${{ github.repository }} \
+          --clobber
