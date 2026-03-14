@@ -1,13 +1,16 @@
 package org.poopeeland.tinytinyfeed.widgets;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -59,11 +62,34 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
 
     private static final String TAG = "TinyTinyFeedWidget";
 
+    private static final String ACTION_AUTO_UPDATE = "org.poopeeland.tinytinyfeed.ACTION_AUTO_UPDATE";
+    private static final long UPDATE_INTERVAL_MS = 30 * 60 * 1000L;
+
     // PendingIntent flags for API compatibility
     private static final int FLAG_IMMUTABLE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
             ? PendingIntent.FLAG_IMMUTABLE : 0;
     private static final int FLAG_MUTABLE = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
             ? PendingIntent.FLAG_MUTABLE : 0;
+
+    private static PendingIntent autoUpdatePendingIntent(Context context) {
+        Intent intent = new Intent(context, TinyTinyFeedWidget.class);
+        intent.setAction(ACTION_AUTO_UPDATE);
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE);
+    }
+
+    private static void scheduleAutoUpdate(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.setInexactRepeating(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + UPDATE_INTERVAL_MS,
+                UPDATE_INTERVAL_MS,
+                autoUpdatePendingIntent(context));
+    }
+
+    private static void cancelAutoUpdate(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.cancel(autoUpdatePendingIntent(context));
+    }
 
     /**
      * Return a Pending Intent asking the refresh of the widget
@@ -81,8 +107,31 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
     }
 
     @Override
+    public void onReceive(Context context, Intent intent) {
+        if (ACTION_AUTO_UPDATE.equals(intent.getAction())) {
+            AppWidgetManager mgr = AppWidgetManager.getInstance(context);
+            int[] ids = mgr.getAppWidgetIds(new ComponentName(context, TinyTinyFeedWidget.class));
+            if (ids.length > 0) {
+                onUpdate(context, mgr, ids);
+            }
+        }
+        super.onReceive(context, intent);
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        scheduleAutoUpdate(context);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        cancelAutoUpdate(context);
+    }
+
+    @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
         Log.d(TAG, "Widget update");
+        scheduleAutoUpdate(context);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (preferences.getBoolean(CHECKED, false)) {
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listViewWidget);
