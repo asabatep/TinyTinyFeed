@@ -32,8 +32,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 27
-        versionName "1.13.4"
+        versionCode 28
+        versionName "1.13.5"
         applicationId "org.poopeeland.tinytinyfeed"
     }
 
