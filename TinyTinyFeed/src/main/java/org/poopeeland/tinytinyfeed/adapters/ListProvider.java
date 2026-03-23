@@ -60,11 +60,12 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged() {
-        RemoteViews rvs = new RemoteViews(context.getPackageName(), R.layout.tiny_tiny_feed_widget);
+        AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 
+        RemoteViews rvs = new RemoteViews(context.getPackageName(), R.layout.tiny_tiny_feed_widget);
         CharSequence updatingText = context.getText(R.string.widget_update_text);
         rvs.setTextViewText(R.id.lastUpdateText, updatingText);
-        AppWidgetManager.getInstance(context).updateAppWidget(this.widgetId, rvs);
+        mgr.partiallyUpdateAppWidget(this.widgetId, rvs);
 
         try {
             Log.d(TAG, "Refresh the articles list");
@@ -77,9 +78,12 @@ public class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         String dateStr = dateFormat.format(new Date());
+        pref.edit().putString(String.format(Locale.getDefault(), LAST_UPDATE_KEY, this.widgetId), dateStr).apply();
+
+        rvs = new RemoteViews(context.getPackageName(), R.layout.tiny_tiny_feed_widget);
         CharSequence text = context.getText(R.string.lastUpdateText);
         rvs.setTextViewText(R.id.lastUpdateText, String.format(text.toString(), dateStr));
-        AppWidgetManager.getInstance(context).updateAppWidget(this.widgetId, rvs);
+        mgr.partiallyUpdateAppWidget(this.widgetId, rvs);
     }
 
     @Override

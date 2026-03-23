@@ -50,6 +50,7 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
     public static final String STATUS_COLOR_KEY = "org.poopeeland.tinytinyfeed.STATUS_COLOR_%d";
     public static final String BG_COLOR_KEY = "org.poopeeland.tinytinyfeed.BACKGROUND_COLOR_%d";
     public static final String ONLY_UNREAD_KEY = "org.poopeeland.tinytinyfeed.ONLY_UNREAD_%d";
+    public static final String LAST_UPDATE_KEY = "org.poopeeland.tinytinyfeed.LAST_UPDATE_%d";
     public static final String ALL_SLL_KEY = "org.poopeeland.tinytinyfeed.PREFERENCE_SSL_SELF";
     public static final String ALL_HOST_KEY = "org.poopeeland.tinytinyfeed.PREFERENCE_SSL_HOSTNAME";
     public static final String CHECKED = "org.poopeeland.tinytinyfeed.CHECKED";
@@ -151,6 +152,11 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
                 rv.setOnClickPendingIntent(R.id.refreshButton, refreshIntent);
                 rv.setInt(R.id.refreshButton, "setColorFilter", textColor);
                 rv.setInt(R.id.lastUpdateText, "setTextColor", textColor);
+                String lastUpdate = preferences.getString(String.format(Locale.getDefault(), LAST_UPDATE_KEY, i), null);
+                if (lastUpdate != null) {
+                    CharSequence updateFmt = context.getText(R.string.lastUpdateText);
+                    rv.setTextViewText(R.id.lastUpdateText, String.format(updateFmt.toString(), lastUpdate));
+                }
                 rv.setInt(R.id.widgetEmptyList, "setTextColor", textColor);
                 rv.setInt(R.id.widgetLayoutId, "setBackgroundColor", bgColor);
                 Intent startActivityIntent = new Intent(context, ArticleReadActivity.class);
@@ -194,6 +200,7 @@ public class TinyTinyFeedWidget extends AppWidgetProvider {
             editor.remove(String.format(Locale.getDefault(), FORCE_UPDATE_KEY, widgetId));
             editor.remove(String.format(Locale.getDefault(), STATUS_COLOR_KEY, widgetId));
             editor.remove(String.format(Locale.getDefault(), BG_COLOR_KEY, widgetId));
+            editor.remove(String.format(Locale.getDefault(), LAST_UPDATE_KEY, widgetId));
 
             editor.apply();
             File f = new File(context.getApplicationContext().getFilesDir()
